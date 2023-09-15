@@ -38,7 +38,7 @@ def handle_register_admin():
     return redirect("/owner/register")
 
   conn, cursor = db
-  query = "INSERT INTO admin(name, mail, password) VALUE(%s, %s, %s)"
+  query = "INSERT INTO admin(name, email, password) VALUES (%s, %s, %s)"
   cursor.execute(query,[name, email, hashed_password])
   conn.commit()
 
@@ -67,9 +67,9 @@ def handle_login_admin():
 
   # GET THE ADMIN
   query = "SELECT * FROM admin WHERE email = %s"
-  cursor.execute(query[email])
+  cursor.execute(query, [email])
 
-  admim = cursor.fetchone()
+  admin = cursor.fetchone()
   
   if not admin:
     flash("Admin does not exist", "danger")
@@ -81,7 +81,7 @@ def handle_login_admin():
     return redirect("/owner")
   
   # CREATE ADMIN LOGIN SESSION
-  session["ADMIN_LOGIN"] = admim.get("email")
+  session["ADMIN_LOGIN"] = admin.get("email")
 
   flash("login successful", "success")
   return redirect("/owner/dashboard")

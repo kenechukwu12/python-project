@@ -1,3 +1,4 @@
+{% set active = "category" %}
 {% extends "admin/_layout.html" %}
 {% block title %} Category {% endblock %}
 
@@ -23,28 +24,59 @@
     </div>
     <!-- end page title -->
 
+    {% if editing %}
+    <!-- EDIT CATEGORY ROW -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="header-title">Edit Category</h4>
+          </div>
+          <form method="POST" action="/owner/category/update/{{ editing.id }}" class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="category" class="form-label">Category</label>
+                  <input type="text" name="category" value="{{ editing.name }}" id="category" class="form-control">
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">Update Category</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- END EDIT CATEGORY ROW -->
+
+    {% else %}
+    <!-- ADD CATEGORY ROW -->
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
             <h4 class="header-title">Add Category</h4>
           </div>
-          <div class="card-body">
+          <form method="POST" action="/owner/category/create" class="card-body">
             <div class="row">
               <div class="col-12">
                 <div class="mb-3">
                   <label for="category" class="form-label">Category</label>
-                  <input type="text" id="category" class="form-control">
+                  <input type="text" name="category" id="category" class="form-control">
                 </div>
               </div>
               <div class="col-12">
-                <div class="btn btn-primary">Add Category</div>
+                <button type="submit" class="btn btn-primary">Add Category</button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
+    <!-- END ADD CATEGORY ROW -->
+    {% endif %}
+
 
     <div class="row">
       <div class="col-12">
@@ -62,15 +94,34 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <!-- CHECKING IF THE CATEGORY CONTAINS ANY DATA -->
+                  {% if categories %}
+                  <!-- LOOP THROUGH THE CATEGORY DATA -->
+                  {% for category in categories %}
                   <tr>
-                    <td>AC336 508 2157</td>
+                    <td>{{ category.name }}</td>
                     <td>
-                      <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                          class="ri-settings-3-line text-primary"></i></a>
-                      <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                          class="ri-delete-bin-2-line text-danger"></i></a>
+                      {% if editing %}
+                        <a title="cancel" href="/owner/category" class="text-reset fs-16 px-1">
+                          <i class="ri-close-line text-warning"></i>
+                        </a>
+                      {% else %}
+                        <a title="edit" href="?cat_id={{ category.id }}" class="text-reset fs-16 px-1">
+                          <i class="ri-pencil-line text-primary"></i>
+                        </a>
+                      {% endif %}
+                      <a title="delete" href="/owner/category/delete/{{ category.id }}" class="text-reset fs-16 px-1">
+                        <i class="ri-delete-bin-2-line text-danger"></i>
+                      </a>
                     </td>
                   </tr>
+                  {% endfor %}
+                  {% else %}
+                  <!-- IF CATEGORY CONTAINS NOTHING  -->
+                  <tr>
+                    <td colspan="3" class="py-4 text-center text-muted">No category found</td>
+                  </tr>
+                  {% endif %}
                 </tbody>
               </table>
             </div>

@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, request, flash, redirect, session
 from ..config.database import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..utils.decorators import autheticated_admin, guest_admin, prevent_multiple
+from ..store.category import get_all_categories
+
 
 admin = Blueprint("admin", __name__)
 db = get_connection()
@@ -43,10 +45,10 @@ def handle_register_admin():
   conn.commit()
 
   if not cursor.rowcount:
-    flash("faild to register admin", "danger")
+    flash("Failed to register admin", "danger")
     return redirect("/owner/register")
   
-  flash("Registertion successful", "success")
+  flash("Registration successful!", "success")
   return redirect("/owner")
 
 
@@ -77,13 +79,14 @@ def handle_login_admin():
   
   # VERIFY THE PASSWORD
   if not check_password_hash(admin.get("password"), password):
-    flash("incorrect credentials", "danger")
+    flash("Incorrect credentials", "danger")
     return redirect("/owner")
   
   # CREATE ADMIN LOGIN SESSION
   session["ADMIN_LOGIN"] = admin.get("email")
+  session["ADMIN_NAME"] = admin.get("name")
 
-  flash("login successful", "success")
+  flash("Login successful!", "success")
   return redirect("/owner/dashboard")
 
 
@@ -98,5 +101,13 @@ def logout_admin():
 @admin.get("/dashboard")
 @autheticated_admin
 def dashboard_page():
-  return render_template("admin/dashboard.html")
+
+  if not db: 
+    flash("Failed to connect to db", "danger")
+    return redirect("/owner/dashboard")
+  
+  _, cursor = db
+  categories = get_all_categories(cursor)
+
+  return render_template("admin/dashboard.html", categories=categories)
   

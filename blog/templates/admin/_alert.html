@@ -1,0 +1,22 @@
+
+{% set alerts = get_flashed_messages(with_categories=true) %}
+<style>
+  .alert-container {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    z-index: 9999;
+  }
+  .alert-container > .alert {
+    max-width: 300px;
+  }
+</style>
+{% if alerts|length %}
+  <div class="alert-container">
+    {% for category, massage in alerts %}
+    <div class="alert alert-{{ category }}" role="alert">
+       {{ massage }}
+    </div>
+    {% endfor %}
+  </div>
+{% endif %}

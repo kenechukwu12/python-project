@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import session, redirect, abort
-from ..config.database import get_connection
+from ..config.database import get_connection 
 
 def guest_admin(func):
   @wraps(func)

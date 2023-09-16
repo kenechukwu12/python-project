@@ -6,12 +6,12 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 def create_app():
-  app = Flask(__name__)
+  app = Flask(__name__) 
 
   # CONFIGS
   app.config["SECRET_KEY"] = SECRET_KEY
   # JOINS THE BASE DIRECTORY WITH /static/uploads -> something.../blog/static/uploads/
-  app.config["BLOG_UPLOAD_PATH"] = os.path.join(BASE_DIR, "/static/uploads/") 
+  app.config["BLOG_UPLOAD_PATH"] = os.path.join(BASE_DIR, "static/uploads/") 
   app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024 # 2MB
 
 
@@ -21,7 +21,6 @@ def create_app():
 
   from .views.category import category
   app.register_blueprint(category, url_prefix="/owner/category")
-
 
   from .views.article import article
   app.register_blueprint(article, url_prefix="/owner/article")

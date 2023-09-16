@@ -11,7 +11,7 @@ db = get_connection()
 @autheticated_admin
 def category_page():
   if not db:
-    flash("Error connecting to db", "danger")
+    flash("Error connecting to db", "danger") 
     return redirect("/owner")
   
   _, cursor = db

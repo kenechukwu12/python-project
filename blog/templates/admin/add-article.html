@@ -6,7 +6,7 @@
 <div class="content">
 
   <!-- Start Content-->
-  <div class="container-fluid">
+  <div class="container-fluid"> 
 
     <!-- start page title -->
     <div class="row">
@@ -32,7 +32,7 @@
           <div class="card-header">
             <h4 class="header-title">Add Article</h4>
           </div>
-          <form class="card-body">
+          <form action="/owner/article/create" method="POST" enctype="multipart/form-data" class="card-body">
             <div class="row">
               <div class="col-6">
                 <div class="mb-3">
@@ -46,7 +46,33 @@
                   <label for="category" class="form-label">Category</label>
                   <select name="category" class="form-control" id="category">
                     <option value="" selected disabled>Select category</option>
+                    {% for category in categories %}
+                      <option value="{{ category.id }}">
+                        {{ category.name }}
+                      </option>
+                    {% endfor %}
                   </select>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mb-3">
+                  <label for="author" class="form-label">Author</label>
+                  <input type="text" name="author" id="author" class="form-control">
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mb-3">
+                  <label for="image" class="form-label">Image</label>
+                  <input type="file" name="image" id="image" class="form-control">
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="content" class="form-label">Content</label>
+                  <textarea id="content" class="form-control" rows="5" name="content"></textarea>
                 </div>
               </div>
               <div class="col-12">

@@ -5,7 +5,7 @@ from ..utils.decorators import autheticated_admin, guest_admin, prevent_multiple
 from ..store.category import get_all_categories
 
 
-admin = Blueprint("admin", __name__)
+admin = Blueprint("admin", __name__) 
 db = get_connection()
 
 # LOGIN ROUTE (VIEW)

@@ -3,6 +3,7 @@ from ..config.database import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..utils.decorators import autheticated_admin, guest_admin, prevent_multiple
 from ..store.category import get_all_categories
+from ..store.article import get_all_articles
 
 
 admin = Blueprint("admin", __name__) 
@@ -108,6 +109,7 @@ def dashboard_page():
   
   _, cursor = db
   categories = get_all_categories(cursor)
+  articles = get_all_articles(cursor)
 
-  return render_template("admin/dashboard.html", categories=categories)
+  return render_template("admin/dashboard.html", categories=categories, articles=articles)
   
